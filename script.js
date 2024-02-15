@@ -1,4 +1,4 @@
-const choiceArr = ['Rock', 'Paper', 'Scissors'];
+const choiceArr = ['rock', 'paper', 'scissors'];
 
 const outcomes = {
   rock: { scissors: 1, paper: 0 },
@@ -6,10 +6,15 @@ const outcomes = {
   scissors: { paper: 1, rock: 0 }
 };
 
-let score = [0, 0];
+let playerScore = 0;
+let computerScore = 0;
 
 function isNumeric(n) {
   return /\d/.test(n);
+}
+
+function random(mn, mx) {
+  return Math.random() * (mx - mn) + mn;
 }
 
 function getOddRounds() {
@@ -18,7 +23,7 @@ function getOddRounds() {
     if (isNumeric(gameLength)) {
       let rounds = Number(gameLength)
       if (rounds % 2 !== 0){
-        break
+        return rounds
       } else {
         console.log("Looks like you entered an even number, choose an odd number to avoid draws!")
       }
@@ -27,7 +32,8 @@ function getOddRounds() {
 }
 
 function getComputerChoice() {
-  return _.sample(choiceArr);
+  let choice = choiceArr[(Math.floor(random(1, choiceArr.length))) - 1]
+  return choice;
 }
 
 function getPlayerChoice() {
@@ -37,7 +43,7 @@ function getPlayerChoice() {
     if (choiceArr.includes(playerChoice)) {
       return playerChoice
     } else  {
-      console.log('You entered: ', choice, '. Try rock, paper or scissors...')
+      console.log('You entered:', choice, '. Try rock, paper or scissors...')
     }
   }
 }
@@ -45,14 +51,14 @@ function getPlayerChoice() {
 function playRound(playerSelection, computerSelection) {
   if (playerSelection == computerSelection) {
     console.log('Draw! Go again!')
-    return 2
+    return 1
   } else {
     if (outcomes[playerSelection][computerSelection] == 1) {
       console.log('You win this round! ', playerSelection, ' beats ', computerSelection)
-      score[0] = score[0]++
+      playerScore++
     } else {
       console.log('You lose this round! ', computerSelection, ' beats ', playerSelection)
-      score[1] = score[1]++
+      computerScore++
     }
   }
 }
@@ -67,11 +73,15 @@ function playGame(rounds) {
       console.log('2')
       console.log('3')
       console.log('Shoot!')
-      playRound(playerChoice, superIntelligentAIChoice)  
+      if (playRound(playerChoice, superIntelligentAIChoice) !== 1) {
+        i++
+      }
     }
-    if (score[0] > score[1]) {
-      console.log('You win! ', score[0], ' to ', score[1])
+    if (playerScore > computerScore) {
+      console.log('You win! ', playerScore, ' to ', computerScore)
     } else {
-      console.log('You lose! ', score[0], ' to ', score[1])
+      console.log('You lose! ', playerScore, ' to ', computerScore)
     }
 }
+
+playGame(getOddRounds())
