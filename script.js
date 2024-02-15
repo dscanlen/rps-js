@@ -66,6 +66,7 @@ function playGame(rounds) {
       console.log('1')
       console.log('2')
       console.log('3')
+      console.log('Shoot!')
       playRound(playerChoice, superIntelligentAIChoice)  
     }
     if (score[0] > score[1]) {
